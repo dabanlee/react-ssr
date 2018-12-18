@@ -1,22 +1,37 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import fetchData from '../helpers/fetchData';
+
 export default class Post extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            post: {},
-        };
+
+        if (props.staticContext && props.staticContext.data) {
+            console.log(1);
+            this.state = {
+                post: props.staticContext.data
+            };
+        } else {
+            console.log(2);
+            this.state = {
+                post: {},
+            };
+        }
     }
     componentDidMount() {
-        fetch(`https://hacker-news.firebaseio.com/v0/item/8863.json`)
-        .then(res => res.json())
-        .then(data => {
+        if (window.__ROUTE_DATA__) {
             this.setState({
-                post: data,
+                post: window.__ROUTE_DATA__,
             });
-            console.log(data);
-        }).catch(console.log);
+            delete window.__ROUTE_DATA__;
+        } else {
+            fetchData().then(data => {
+                this.setState({
+                    post: data,
+                });
+            })
+        }
     }
     render() {
         const post = this.state.post;
@@ -24,8 +39,8 @@ export default class Post extends Component {
             <div>
                 <h1>Page Post</h1>
                 <Link to="/">Link to Home</Link>
-                <h2>{ post.title }</h2>
-                <p>By: { post.by }</p>
+                <h2>Title: { post.title }</h2>
+                <p>By: { post.author }</p>
                 <p>Link: <a href={post.url} target="_blank">{post.url}</a></p>
             </div>
         );

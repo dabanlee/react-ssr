@@ -29203,6 +29203,30 @@ var _jsxFileName = "/Users/lbc/Code/self/github/react-ssr/src/App.jsx";
 
 /***/ }),
 
+/***/ "./src/helpers/fetchData.js":
+/*!**********************************!*\
+  !*** ./src/helpers/fetchData.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      return resolve({
+        title: 'This is title.',
+        content: 'This is content.',
+        author: '大板栗.',
+        url: 'https://github.com/justclear'
+      });
+    }, 2000);
+  });
+});
+
+/***/ }),
+
 /***/ "./src/index.jsx":
 /*!***********************!*\
   !*** ./src/index.jsx ***!
@@ -29223,7 +29247,7 @@ var _jsxFileName = "/Users/lbc/Code/self/github/react-ssr/src/index.jsx";
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.hydrate(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
   __source: {
     fileName: _jsxFileName,
     lineNumber: 7
@@ -29297,12 +29321,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _helpers_fetchData__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../helpers/fetchData */ "./src/helpers/fetchData.js");
 
 
 
 
 
 var _jsxFileName = "/Users/lbc/Code/self/github/react-ssr/src/pages/Post.jsx";
+
 
 
 
@@ -29317,9 +29343,19 @@ function (_Component) {
     Object(_Users_lbc_Code_self_github_react_ssr_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Post);
 
     _this = Object(_Users_lbc_Code_self_github_react_ssr_node_modules_babel_runtime_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_Users_lbc_Code_self_github_react_ssr_node_modules_babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(Post).call(this, props));
-    _this.state = {
-      post: {}
-    };
+
+    if (props.staticContext && props.staticContext.data) {
+      console.log(1);
+      _this.state = {
+        post: props.staticContext.data
+      };
+    } else {
+      console.log(2);
+      _this.state = {
+        post: {}
+      };
+    }
+
     return _this;
   }
 
@@ -29328,15 +29364,18 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch("https://hacker-news.firebaseio.com/v0/item/8863.json").then(function (res) {
-        return res.json();
-      }).then(function (data) {
-        _this2.setState({
-          post: data
+      if (window.__ROUTE_DATA__) {
+        this.setState({
+          post: window.__ROUTE_DATA__
         });
-
-        console.log(data);
-      }).catch(console.log);
+        delete window.__ROUTE_DATA__;
+      } else {
+        Object(_helpers_fetchData__WEBPACK_IMPORTED_MODULE_7__["default"])().then(function (data) {
+          _this2.setState({
+            post: data
+          });
+        });
+      }
     }
   }, {
     key: "render",
@@ -29345,38 +29384,38 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24
+          lineNumber: 39
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 25
+          lineNumber: 40
         },
         __self: this
       }, "Page Post"), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Link"], {
         to: "/",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 26
+          lineNumber: 41
         },
         __self: this
       }, "Link to Home"), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("h2", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 27
+          lineNumber: 42
         },
         __self: this
-      }, post.title), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("p", {
+      }, "Title: ", post.title), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
+          lineNumber: 43
         },
         __self: this
-      }, "By: ", post.by), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("p", {
+      }, "By: ", post.author), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 29
+          lineNumber: 44
         },
         __self: this
       }, "Link: ", react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("a", {
@@ -29384,7 +29423,7 @@ function (_Component) {
         target: "_blank",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 29
+          lineNumber: 44
         },
         __self: this
       }, post.url)));
