@@ -1,0 +1,22 @@
+{
+  "name": "react-ssr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:client": "NODE_ENV=development webpack -w"
+  },
+  "repository": "https://github.com/JustClear/react-ssr.git",
+  "author": "大板栗 <576839360@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "babel-loader": "^8.0.4",
+    "babel-preset-react-app": "^6.1.0"
+  }
+}
