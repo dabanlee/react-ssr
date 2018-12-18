@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build:client": "NODE_ENV=development webpack -w"
+    "build:client": "NODE_ENV=development webpack -w",
+    "build:server": "NODE_ENV=development webpack -w --config webpack.server.js",
+    "start": "nodemon server/build/app.js"
   },
   "repository": "https://github.com/JustClear/react-ssr.git",
   "author": "大板栗 <576839360@qq.com>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.16.4",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1"
